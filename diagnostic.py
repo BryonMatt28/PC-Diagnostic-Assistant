@@ -1,28 +1,19 @@
-import psutil
-
-cpu = []
-
-def get_cpu_usage():
-   cpu_usage = psutil.cpu_percent(interval=1, percpu=True)
-   cpu.append(cpu_usage)
-get_cpu_usage()
+import memory
+import cpu_monitoring
+import time
 
 
 
-def get_highest_cpu_usage():
-    if cpu:
-        highest_usage = max(cpu[0])
-        return highest_usage
-    else:
-        return None
+cpu_Monitor = cpu_monitoring.CPUMonitor()
+memory_Monitor = memory.MemoryMonitor()
 
-highest_cpu = get_highest_cpu_usage()
+while True:
+    cpu_Monitor.get_Cpu_Usage()
+    cpu_Monitor.get_Highest_Cpu_Usage()
+    cpu_Monitor.check_Cpu_Usage()
+    memory_Monitor.get_Ram_Usage()
 
-if highest_cpu == None:
-    print("No CPU usage data available.")
-elif highest_cpu <= 80:
-    print("CPU usage is within normal limits.")
-else:
-    print("Warning: High CPU usage detected!")
+    print("CPU:", cpu_Monitor.cpu[-1])
+    print("RAM:", memory_Monitor.ram[-1])
 
-    
+    time.sleep(5)
