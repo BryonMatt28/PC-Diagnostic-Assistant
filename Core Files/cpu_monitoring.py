@@ -5,12 +5,19 @@ class CPUMonitor:
 
     def __init__(self):
         self.cpu = []
+        self.cpu_perc = []
 
     def get_Cpu_Usage(self):
         cpu_usage = psutil.cpu_percent(interval=1, percpu=True)
         self.cpu.append(cpu_usage)
         self.clear_Oldest_Entry()
         return cpu_usage
+
+    def get_Cpu_Usage_Perc(self):
+        cpu_usage_perc = psutil.cpu_percent(interval=1)
+        self.cpu_perc.append(cpu_usage_perc)
+        self.clear_Oldest_Entry()
+        return cpu_usage_perc
 
     def get_Highest_Cpu_Usage(self):
         if self.cpu:
@@ -21,7 +28,10 @@ class CPUMonitor:
 
     def clear_Oldest_Entry(self):
         if len(self.cpu) > 60:
-            self.cpu.pop(0)    
+            self.cpu.pop(0) 
+
+        if len(self.cpu_perc) > 1:
+            self.cpu_perc.pop(0)       
 
     def check_Cpu_Usage(self):
         highest_cpu = self.get_Highest_Cpu_Usage()   
